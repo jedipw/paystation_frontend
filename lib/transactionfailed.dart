@@ -1,16 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'sumlistpage.dart';
 import 'package:flutter/material.dart';
+import 'uploadslippage.dart';
 
-void main() {
-  runApp(const CupertinoApp(
-    title: 'Navigation Basics',
-    home: camerapage(),
-  ));
-}
-
-class camerapage extends StatelessWidget {
-  const camerapage({super.key});
+class transactionfailed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +12,7 @@ class camerapage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'Camera Page',
+              'Transactionfailed Page',
               style: TextStyle(
                 fontSize: 20, // Customize the font size as needed
               ),
@@ -29,11 +21,11 @@ class camerapage extends StatelessWidget {
             const SizedBox(height: 16), 
             // Adding some spacing
             CupertinoButton.filled(
-              child: const Text('Summary List'),
+              child: const Text('Move Back'),
               onPressed: () {
                 Navigator.push(
                   context,
-                  CupertinoPageRoute(builder: (context) => sumlistpage()),
+                  CupertinoPageRoute(builder: (context) => uploadslippage()),
                 );
               },
             ),
@@ -43,4 +35,3 @@ class camerapage extends StatelessWidget {
     );
   }
 }
-
