@@ -1,31 +1,30 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'uploadslippage.dart';
+import 'payment_page.dart';
 
-class transactionfailed extends StatelessWidget {
+class ListPage extends StatelessWidget {
+  const ListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      child: Center(
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'Transactionfailed Page',
+              'Summary List Page',
               style: TextStyle(
                 fontSize: 20, // Customize the font size as needed
               ),
             ),
-            
-            const SizedBox(height: 16), 
-            // Adding some spacing
-            CupertinoButton.filled(
-              child: const Text('Move Back'),
+            const SizedBox(height: 16),
+            TextButton(
+              child: const Text('Payment Page'),
               onPressed: () {
                 Navigator.push(
                   context,
-                  CupertinoPageRoute(builder: (context) => uploadslippage()),
+                  MaterialPageRoute(builder: (context) => const PaymentPage()),
                 );
               },
             ),
