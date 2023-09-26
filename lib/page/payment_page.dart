@@ -23,12 +23,11 @@ class PaymentPage extends StatelessWidget {
             TextButton(
               child: const Text('Complete Page'),
               onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            const CompletePage()),
-                    ModalRoute.withName('/'));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const CompletePage()),
+                );
               },
             ),
             const SizedBox(height: 16),
