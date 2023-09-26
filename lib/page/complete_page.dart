@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:paystation_frontend/page/camera_page.dart';
 
 class CompletePage extends StatelessWidget {
   const CompletePage({super.key});
@@ -23,12 +22,8 @@ class CompletePage extends StatelessWidget {
               TextButton(
                 child: const Text('Camera Page'),
                 onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              const CameraPage()),
-                      ModalRoute.withName('/'));
+                  Navigator.pop(context);
+                  Navigator.pop(context);
                   Navigator.pop(context);
                 },
               ),
