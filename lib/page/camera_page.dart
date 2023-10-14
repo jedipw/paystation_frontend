@@ -15,16 +15,23 @@ class CameraPage extends StatefulWidget {
 class _CameraPageState extends State<CameraPage> {
   late CameraController _controller;
   bool _isFlashOn = false;
+  bool _isCameraOn = false;
 
   @override
   void initState() {
     super.initState();
+    initializeCamera();
+  }
+
+  void initializeCamera() {
     _controller = CameraController(widget.cameras[0], ResolutionPreset.max);
     _controller.initialize().then((_) {
       if (!mounted) {
         return;
       }
-      setState(() {});
+      setState(() {
+        _isCameraOn = true;
+      });
     }).catchError((Object e) {
       if (e is CameraException) {
         switch (e.code) {
@@ -55,11 +62,17 @@ class _CameraPageState extends State<CameraPage> {
     if (scale < 1) scale = 1 / scale;
 
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
           Transform.scale(
             scale: scale,
-            child: Center(child: CameraPreview(_controller)),
+            child: Center(
+                child: _isCameraOn
+                    ? CameraPreview(_controller)
+                    : Container(
+                        color: Colors.black,
+                      )),
           ),
           Positioned(
             top: 0,
@@ -115,7 +128,8 @@ class _CameraPageState extends State<CameraPage> {
                         XFile picture = await _controller.takePicture();
                         setState(() {
                           _isFlashOn = false;
-                          _controller.setFlashMode(FlashMode.off);
+                          _isCameraOn = false;
+                          _controller.dispose();
                         });
 
                         // ignore: use_build_context_synchronously
@@ -123,7 +137,9 @@ class _CameraPageState extends State<CameraPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    const ListPage()));
+                                    const ListPage())).then((res) {
+                          initializeCamera();
+                        });
                       } on CameraException catch (e) {
                         debugPrint("Error occured while taking picture: $e");
                         return;
@@ -162,7 +178,7 @@ class CircleButton extends StatelessWidget {
           ),
         ),
         child: Container(
-          margin: EdgeInsets.all(2.0), // Adjust the margin as needed
+          margin: const EdgeInsets.all(2.0), // Adjust the margin as needed
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.white,
