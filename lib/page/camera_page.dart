@@ -14,16 +14,24 @@ class CameraPage extends StatefulWidget {
 
 class _CameraPageState extends State<CameraPage> {
   late CameraController _controller;
+  bool _isFlashOn = false;
+  bool _isCameraOn = false;
 
   @override
   void initState() {
     super.initState();
+    initializeCamera();
+  }
+
+  void initializeCamera() {
     _controller = CameraController(widget.cameras[0], ResolutionPreset.max);
     _controller.initialize().then((_) {
       if (!mounted) {
         return;
       }
-      setState(() {});
+      setState(() {
+        _isCameraOn = true;
+      });
     }).catchError((Object e) {
       if (e is CameraException) {
         switch (e.code) {
@@ -40,12 +48,63 @@ class _CameraPageState extends State<CameraPage> {
 
   @override
   Widget build(BuildContext context) {
+    var camera = _controller.value;
+    // fetch screen size
+    final size = MediaQuery.of(context).size;
+
+    // calculate scale depending on screen and camera ratios
+    // this is actually size.aspectRatio / (1 / camera.aspectRatio)
+    // because camera preview size is received as landscape
+    // but we're calculating for portrait orientation
+    var scale = size.aspectRatio * camera.aspectRatio;
+
+    // to prevent scaling down, invert the value
+    if (scale < 1) scale = 1 / scale;
+
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
-          SizedBox(
-            height: double.infinity,
-            child: CameraPreview(_controller),
+          Transform.scale(
+            scale: scale,
+            child: Center(
+                child: _isCameraOn
+                    ? CameraPreview(_controller)
+                    : Container(
+                        color: Colors.black,
+                      )),
+          ),
+          Positioned(
+            top: 0,
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(10, 40, 0, 5),
+              width: MediaQuery.of(context).size.width,
+              color: const Color.fromARGB(150, 0, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _isFlashOn = !_isFlashOn;
+                        if (_isFlashOn) {
+                          _controller.setFlashMode(FlashMode.torch);
+                        } else {
+                          _controller.setFlashMode(FlashMode.off);
+                        }
+                      });
+                    },
+                    icon: Icon(
+                      _isFlashOn
+                          ? Icons.flash_on_outlined
+                          : Icons.flash_off_outlined,
+                      color: Colors.white,
+                      size: 32,
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
           Positioned(
             bottom: 0,
@@ -66,15 +125,21 @@ class _CameraPageState extends State<CameraPage> {
                       }
 
                       try {
-                        await _controller.setFlashMode(FlashMode.auto);
                         XFile picture = await _controller.takePicture();
+                        setState(() {
+                          _isFlashOn = false;
+                          _isCameraOn = false;
+                          _controller.dispose();
+                        });
+
                         // ignore: use_build_context_synchronously
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  const ListPage()),
-                        );
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    const ListPage())).then((res) {
+                          initializeCamera();
+                        });
                       } on CameraException catch (e) {
                         debugPrint("Error occured while taking picture: $e");
                         return;
@@ -113,7 +178,7 @@ class CircleButton extends StatelessWidget {
           ),
         ),
         child: Container(
-          margin: EdgeInsets.all(2.0), // Adjust the margin as needed
+          margin: const EdgeInsets.all(2.0), // Adjust the margin as needed
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.white,
