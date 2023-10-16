@@ -56,7 +56,10 @@ class _CameraPageState extends State<CameraPage> {
     // this is actually size.aspectRatio / (1 / camera.aspectRatio)
     // because camera preview size is received as landscape
     // but we're calculating for portrait orientation
-    var scale = size.aspectRatio * camera.aspectRatio;
+    var scale = 0.0;
+    if (_controller.value.isInitialized) {
+      scale = size.aspectRatio * (camera.aspectRatio);
+    }
 
     // to prevent scaling down, invert the value
     if (scale < 1) scale = 1 / scale;
