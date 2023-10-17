@@ -27,7 +27,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Can I use the camera please? Only for demo purpose of the app</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Can you allow me to access your photo please?</string>
+	<string>Can you allow me to access your photos please?</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
