@@ -1,7 +1,7 @@
 import 'dart:developer';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:paystation_frontend/page/list_page.dart';
 
 class CameraPage extends StatefulWidget {
@@ -46,6 +46,20 @@ class _CameraPageState extends State<CameraPage> {
     });
   }
 
+  Future _pickImageFromGallery() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (returnedImage!.path.isNotEmpty) {
+      // ignore: use_build_context_synchronously
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => const ListPage())).then((res) {
+        initializeCamera();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var camera = _controller.value;
@@ -71,11 +85,12 @@ class _CameraPageState extends State<CameraPage> {
           Transform.scale(
             scale: scale,
             child: Center(
-                child: _isCameraOn
-                    ? CameraPreview(_controller)
-                    : Container(
-                        color: Colors.black,
-                      )),
+              child: _isCameraOn
+                  ? CameraPreview(_controller)
+                  : Container(
+                      color: Colors.black,
+                    ),
+            ),
           ),
           Positioned(
             top: 0,
@@ -116,8 +131,20 @@ class _CameraPageState extends State<CameraPage> {
               width: MediaQuery.of(context).size.width,
               color: const Color.fromARGB(150, 0, 0, 0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
+                  Column(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.image,
+                            size: 50, color: Colors.white),
+                        onPressed: () {
+                          _pickImageFromGallery();
+                        },
+                      ),
+                      const SizedBox(height: 25)
+                    ],
+                  ),
                   CircleButton(
                     onTap: () async {
                       if (!_controller.value.isInitialized) {
@@ -149,6 +176,7 @@ class _CameraPageState extends State<CameraPage> {
                       }
                     },
                   ),
+                  const SizedBox(width: 50, height: 50),
                 ],
               ),
             ),
