@@ -1,8 +1,12 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:paystation_frontend/page/list_page.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 class CameraPage extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -16,6 +20,7 @@ class _CameraPageState extends State<CameraPage> {
   late CameraController _controller;
   bool _isFlashOn = false;
   bool _isCameraOn = false;
+  final apiUrl = dotenv.env['API_URL']!;
 
   @override
   void initState() {
@@ -55,12 +60,31 @@ class _CameraPageState extends State<CameraPage> {
         _isCameraOn = false;
         _controller.dispose();
       });
-      // ignore: use_build_context_synchronously
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => const ListPage())).then((res) {
-        initializeCamera();
+
+      var url = Uri.http(apiUrl, 'detect');
+      var request = http.MultipartRequest("POST", url);
+      // request.fields['user'] = 'blah';
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'image_file',
+          returnedImage.path,
+          contentType: MediaType('image', 'jpeg'),
+        ),
+      );
+
+      request.send().then((response) async {
+        if (response.statusCode == 200) {
+          final res = await http.Response.fromStream(response);
+          final data = json.decode(res.body).toList().cast<String>();
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      ListPage(listOfItems: data))).then((res) {
+            initializeCamera();
+          });
+        }
       });
     }
   }
@@ -169,10 +193,11 @@ class _CameraPageState extends State<CameraPage> {
 
                         // ignore: use_build_context_synchronously
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    const ListPage())).then((res) {
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        const ListPage(listOfItems: [])))
+                            .then((res) {
                           initializeCamera();
                         });
                       } on CameraException catch (e) {
