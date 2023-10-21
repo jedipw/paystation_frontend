@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'payment_page.dart';
 
 class ListPage extends StatelessWidget {
-  const ListPage({super.key});
+  final List<String> listOfItems;
+  const ListPage({super.key, required this.listOfItems});
 
   @override
   Widget build(BuildContext context) {
