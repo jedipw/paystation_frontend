@@ -50,6 +50,11 @@ class _CameraPageState extends State<CameraPage> {
     final returnedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (returnedImage!.path.isNotEmpty) {
+      setState(() {
+        _isFlashOn = false;
+        _isCameraOn = false;
+        _controller.dispose();
+      });
       // ignore: use_build_context_synchronously
       Navigator.push(
           context,
