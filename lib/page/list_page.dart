@@ -56,86 +56,91 @@ class ListPage extends StatelessWidget {
                   topRight: Radius.circular(37.0),
                 ),
               ),
-              child: Column(
-                children: <Widget>[
-                  const Padding(
-                    padding: EdgeInsets.only(
-                        top: 25), // Adjust the padding as needed
-                    child: Text(
-                      'KMUTT Bookstore',
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontFamily:
-                              'Poppins' // Customize the font size as needed
-                          ),
-                    ),
-                  ),
-                  // Add the custom painted dashed line with padding
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                        40, 40, 40, 0), // Adjust the padding as needed
-                    child: CustomPaint(
-                      size: const Size(double.infinity, 16),
-                      painter: DashedLinePainter(),
-                    ),
-                  ),
-
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(width: 40),
-                      Text(
-                        'QTY',
+              child: SingleChildScrollView( // Wrap the Column in a SingleChildScrollView
+                child: Column(
+                  children: <Widget>[
+                    const Padding(
+                      padding: EdgeInsets.only(
+                          top: 25), // Adjust the padding as needed
+                      child: Text(
+                        'KMUTT Bookstore',
                         style: TextStyle(
                             fontSize: 25,
-                            color: Colors.black,
-                            fontFamily: 'Poppins' // Text color
+                            fontFamily:
+                                'Poppins' // Customize the font size as needed
                             ),
                       ),
-                      SizedBox(width: 20),
-                      Text(
-                        'Item', // Add your custom text here
-                        style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.black,
-                            fontFamily: 'Poppins' // Text color
-                            ),
-                      ),
-                      SizedBox(width: 125),
-                      Text(
-                        'Price', // Add your custom text here
-                        style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.black,
-                            fontFamily: 'Poppins' // Text color
-                            ),
-                      ),
-                    ],
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                        40, 10, 40, 0), // Adjust the padding as needed
-                    child: CustomPaint(
-                      size: const Size(double.infinity, 16),
-                      painter: DashedLinePainter(),
                     ),
-                  ),
+                    // Add the custom painted dashed line with padding
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                          40, 40, 40, 0), // Adjust the padding as needed
+                      child: CustomPaint(
+                        size: const Size(double.infinity, 16),
+                        painter: DashedLinePainter(),
+                      ),
+                    ),
 
-            Row(
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(width: 40),
+                        Text(
+                          'QTY',
+                          style: TextStyle(
+                              fontSize: 25,
+                              color: Colors.black,
+                              fontFamily: 'Poppins' // Text color
+                              ),
+                        ),
+                        SizedBox(width: 30),
+                        Text(
+                          'Item', // Add your custom text here
+                          style: TextStyle(
+                              fontSize: 25,
+                              color: Colors.black,
+                              fontFamily: 'Poppins' // Text color
+                              ),
+                        ),
+                        SizedBox(width: 115),
+                        Text(
+                          'Price', // Add your custom text here
+                          style: TextStyle(
+                              fontSize: 25,
+                              color: Colors.black,
+                              fontFamily: 'Poppins' // Text color
+                              ),
+                        ),
+                      ],
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                          40, 10, 40, 0), // Adjust the padding as needed
+                      child: CustomPaint(
+                        size: const Size(double.infinity, 16),
+                        painter: DashedLinePainter(),
+                      ),
+                    ),
+
+                    Row(
   mainAxisAlignment: MainAxisAlignment.start,
   children: <Widget>[
     const SizedBox(width: 60),
-    const Text(
-      '2',
-      style: TextStyle(
-        fontSize: 17,
-        color: Colors.black,
-        fontFamily: 'Poppins',
+    const Expanded(
+      flex: 1, // Added flex property to allow the '2' to expand independently
+      child: Text(
+        '2',
+        style: TextStyle(
+          fontSize: 17,
+          color: Colors.black,
+          fontFamily: 'Poppins',
+        ),
       ),
     ),
-    const SizedBox(width: 35),
+    const SizedBox(width: 10), // Added space between '2' and 'MONAMI Jumbo highlighter'
     const Expanded(
+      flex: 3, // Added flex property to allow 'MONAMI Jumbo highlighter' to expand
       child: Text(
         'MONAMI Jumbo highlighter',
         style: TextStyle(
@@ -146,10 +151,35 @@ class ListPage extends StatelessWidget {
         overflow: TextOverflow.fade,
       ),
     ),
-    Container( // Wrap the "80.00" text in a Container
-      width: 90, // Adjust the width as needed
-      child: const Text(
-        '80.00',
+    Container(
+      child: const Align(
+        alignment: Alignment.centerRight, // Adjust the alignment to move '80.00' closer to the right edge
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 45.0), // Adjust the padding as needed
+          child: Text(
+            '80.00', // Add your custom text here
+            style: TextStyle(
+              fontSize: 17,
+              color: Colors.black,
+              fontFamily: 'Poppins',
+            ),
+          ),
+        ),
+      ),
+    ),
+  ],
+),
+
+
+                    const SizedBox(height: 20),
+                   Row(
+  mainAxisAlignment: MainAxisAlignment.start,
+  children: <Widget>[
+    const SizedBox(width: 60),
+    const Expanded(
+      flex: 1,
+      child: Text(
+        '1',
         style: TextStyle(
           fontSize: 17,
           color: Colors.black,
@@ -157,24 +187,9 @@ class ListPage extends StatelessWidget {
         ),
       ),
     ),
-  ],
-),
-
-                  const SizedBox(height: 20),
-                 Row(
-  mainAxisAlignment: MainAxisAlignment.start,
-  children: <Widget>[
-    const SizedBox(width: 60),
-    const Text(
-      '1',
-      style: TextStyle(
-        fontSize: 17,
-        color: Colors.black,
-        fontFamily: 'Poppins',
-      ),
-    ),
-    const SizedBox(width: 35),
+    const SizedBox(width: 10), // Add space between '1' and 'Sharpie SNote'
     const Expanded(
+      flex: 3,
       child: Text(
         'Sharpie SNote',
         style: TextStyle(
@@ -182,13 +197,37 @@ class ListPage extends StatelessWidget {
           color: Colors.black,
           fontFamily: 'Poppins',
         ),
-        overflow: TextOverflow.fade, // You can use TextOverflow.ellipsis if preferred
+        overflow: TextOverflow.fade,
       ),
     ),
-    Container( // Wrap the "60.00" text in a Container
-      width: 90, // Adjust the width as needed
-      child: const Text(
-        '60.00',
+    Container(
+      child: const Align(
+        alignment: Alignment.centerRight,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 45.0),
+          child: Text(
+            '60.00',
+            style: TextStyle(
+              fontSize: 17,
+              color: Colors.black,
+              fontFamily: 'Poppins',
+            ),
+          ),
+        ),
+      ),
+    ),
+  ],
+),
+
+                    const SizedBox(height: 20),
+                    Row(
+  mainAxisAlignment: MainAxisAlignment.start,
+  children: <Widget>[
+    const SizedBox(width: 60),
+    const Expanded(
+      flex: 1,
+      child: Text(
+        '1',
         style: TextStyle(
           fontSize: 17,
           color: Colors.black,
@@ -196,24 +235,9 @@ class ListPage extends StatelessWidget {
         ),
       ),
     ),
-  ],
-),
-
-                  const SizedBox(height: 20),
-                  Row(
-  mainAxisAlignment: MainAxisAlignment.start,
-  children: <Widget>[
-    const SizedBox(width: 60),
-    const Text(
-      '1',
-      style: TextStyle(
-        fontSize: 17,
-        color: Colors.black,
-        fontFamily: 'Poppins',
-      ),
-    ),
-    const SizedBox(width: 35),
+    const SizedBox(width: 10), // Add space between '1' and 'Sakura acrylic color'
     const Expanded(
+      flex: 3,
       child: Text(
         'Sakura acrylic color',
         style: TextStyle(
@@ -221,97 +245,116 @@ class ListPage extends StatelessWidget {
           color: Colors.black,
           fontFamily: 'Poppins',
         ),
-        overflow: TextOverflow.fade, // You can use TextOverflow.ellipsis if preferred
+        overflow: TextOverflow.fade,
       ),
     ),
-    Container( // Wrap the "39.00" text in a Container
-      width: 90, // Adjust the width as needed
-      child: const Text(
-        '39.00',
-        style: TextStyle(
-          fontSize: 17,
-          color: Colors.black,
-          fontFamily: 'Poppins',
+    Container(
+      child: const Align(
+        alignment: Alignment.centerRight,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 45.0),
+          child: Text(
+            '39.00',
+            style: TextStyle(
+              fontSize: 17,
+              color: Colors.black,
+              fontFamily: 'Poppins',
+            ),
+          ),
         ),
       ),
     ),
   ],
 ),
 
-                  const SizedBox(height: 35),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                        40, 10, 40, 0), // Adjust the padding as needed
-                    child: CustomPaint(
-                      size: const Size(double.infinity, 16),
-                      painter: DashedLinePainter(),
+
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                          40, 10, 40, 0), // Adjust the padding as needed
+                      child: CustomPaint(
+                        size: const Size(double.infinity, 16),
+                        painter: DashedLinePainter(),
+                      ),
                     ),
-                  ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(width: 45),
-                      Text(
-                        'Total',
-                        style: TextStyle(
+
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        SizedBox(width: 45),
+                        Text(
+                          'Total',
+                          style: TextStyle(
                             fontSize: 25,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'Poppins' // Text color
+                            fontFamily: 'Poppins',
+                          ),
+                        ),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 40.0), // Adjust the padding as needed
+                              child: Text(
+                                '259.00', // Add your custom text here
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
                             ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                          40, 15, 40, 0), // Adjust the padding as needed
+                      child: CustomPaint(
+                        size: const Size(double.infinity, 16),
+                        painter: DashedLinePainter(),
                       ),
-                      SizedBox(width: 155),
-                      Text(
-                        '259.00', // Add your custom text here
-                        style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Poppins' // Text color
+                    ),
+
+                    // "CONFIRM" button at the end of the Column
+                     Padding(
+                      padding: const EdgeInsets.only(top: 80.0), // Add space above the button
+                      child: TextButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color.fromARGB(255, 0x1C, 0x85, 0x0A), // Green color for the button
+                          ),
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0),
                             ),
+                          ),
+                          minimumSize: MaterialStateProperty.all<Size>(
+                            const Size(276, 0), // Set the minimum width to 276
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const PaymentPage(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          'CONFIRM',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                        40, 15, 40, 0), // Adjust the padding as needed
-                    child: CustomPaint(
-                      size: const Size(double.infinity, 16),
-                      painter: DashedLinePainter(),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          // Rounded Button with Green Color at the Bottom
-          Positioned(
-            bottom: 60, // Adjust the bottom position as needed
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Container(
-                width: 276, // Adjust the width as needed
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(
-                      255, 0x1C, 0x85, 0x0A), // Green color for the button
-                  borderRadius: BorderRadius.circular(25.0),
-                ),
-                child: TextButton(
-                  child: const Text(
-                    'CONFIRM',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PaymentPage()),
-                    );
-                  },
+                  ],
                 ),
               ),
             ),
