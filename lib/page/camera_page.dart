@@ -52,6 +52,19 @@ class _CameraPageState extends State<CameraPage> {
     });
   }
 
+  Future<Map<String, dynamic>> fetchPriceAndNameForItem(String item) async {
+    var url = Uri.http(apiUrl, 'getProductInfo', {'className': item});
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = await json.decode(response.body);
+      Map<String, dynamic> output = data.first;
+      return output;
+    } else {
+      throw Exception('Failed to load price for $item');
+    }
+  }
+
   void detectItem(image) async {
     var url = Uri.http(apiUrl, 'detect');
     var request = http.MultipartRequest("POST", url);
@@ -68,12 +81,33 @@ class _CameraPageState extends State<CameraPage> {
       if (response.statusCode == 200) {
         final res = await http.Response.fromStream(response);
         final data = json.decode(res.body).toList().cast<String>();
+        Map<String, int> priceCache = {};
+        Map<String, String> nameCache = {};
+        List<List<dynamic>> outputList = [];
+
+        for (String item in data) {
+          if (!priceCache.containsKey(item)) {
+            Map<String, dynamic> info = await fetchPriceAndNameForItem(item);
+            priceCache[item] = info['productPrice'];
+            nameCache[item] = info['productName'];
+            outputList.add([1, nameCache[item], priceCache[item]]);
+          } else if (priceCache.containsKey(item)) {
+            int currentCount = outputList
+                .firstWhere((element) => element[1] == nameCache[item])[0];
+            outputList.removeWhere((element) => element[1] == nameCache[item]);
+
+            outputList
+                .add([currentCount + 1, nameCache[item], priceCache[item]]);
+          }
+        }
+
+
         // ignore: use_build_context_synchronously
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (BuildContext context) =>
-                    ListPage(listOfItems: data))).then((res) {
+                    ListPage(listOfItems: outputList))).then((res) {
           initializeCamera();
         });
       }
