@@ -72,7 +72,7 @@ class FailPage extends StatelessWidget {
             ),
           ),
           const Positioned(
-            top: 412, // Adjust the top position as needed
+            top: 400, // Adjust the top position as needed
             left: 0,
             right: 0,
             child: Center(
