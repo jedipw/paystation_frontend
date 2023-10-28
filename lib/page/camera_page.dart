@@ -21,6 +21,7 @@ class _CameraPageState extends State<CameraPage> {
   late CameraController _controller;
   bool _isFlashOn = false;
   bool _isCameraOn = false;
+  bool _isLoading = false;
   final apiUrl = dotenv.env['API_URL']!;
 
   @override
@@ -111,6 +112,7 @@ class _CameraPageState extends State<CameraPage> {
                 builder: (BuildContext context) =>
                     ListPage(listOfItems: outputList))).then((res) {
           initializeCamera();
+          _isLoading = false;
         });
       }
     });
@@ -158,17 +160,40 @@ class _CameraPageState extends State<CameraPage> {
                   ? CameraPreview(_controller)
                   : Container(
                       color: Colors.black,
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            LoadingAnimationWidget.beat(
-                              color: Colors.white,
-                              size: 100,
+                      child: _isLoading
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  LoadingAnimationWidget.beat(
+                                    color: Colors.white,
+                                    size: 100,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      initializeCamera();
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(30)),
+                                      margin: const EdgeInsets.only(top: 50),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 10, 20, 10),
+                                      child: const Text(
+                                        'CANCEL',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 20,
+                                            fontFamily: 'Poppins'),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             )
-                          ],
-                        ),
-                      ),
+                          : Container(),
                     ),
             ),
           ),
@@ -240,6 +265,7 @@ class _CameraPageState extends State<CameraPage> {
                             try {
                               XFile picture = await _controller.takePicture();
                               setState(() {
+                                _isLoading = true;
                                 _isFlashOn = false;
                                 _isCameraOn = false;
                                 _controller.dispose();
