@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paystation_frontend/page/fail_page.dart';
+import 'package:paystation_frontend/page/thanks_page.dart';
 import 'complete_page.dart';
 
 class PaymentPage extends StatelessWidget {
@@ -27,6 +28,17 @@ class PaymentPage extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) => const CompletePage()),
+                );
+              },
+            ),
+            const SizedBox(height: 16),
+            TextButton(
+              child: const Text('Thanks Page'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const ThanksPage()),
                 );
               },
             ),
