@@ -97,11 +97,8 @@ class _CameraPageState extends State<CameraPage> {
                 .firstWhere((element) => element[1] == nameCache[item])[0];
             outputList.removeWhere((element) => element[1] == nameCache[item]);
 
-            outputList.add([
-              currentCount + 1,
-              nameCache[item],
-              priceCache[item]! * (currentCount + 1)
-            ]);
+            outputList
+                .add([currentCount + 1, nameCache[item], priceCache[item]!]);
           }
         }
 
