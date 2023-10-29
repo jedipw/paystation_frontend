@@ -347,10 +347,11 @@ class ListPage extends StatelessWidget {
                           );
                         },
                         child: const Text(
-                          'CONFIRM',
+                          'CHECK OUT',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 22,
+                             fontFamily: 'Poppins',
                           ),
                         ),
                       ),
