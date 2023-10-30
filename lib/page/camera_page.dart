@@ -21,6 +21,7 @@ class _CameraPageState extends State<CameraPage> {
   late CameraController _controller;
   bool _isFlashOn = false;
   bool _isCameraOn = false;
+  bool _isNoItem = false;
   final apiUrl = dotenv.env['API_URL']!;
 
   @override
@@ -37,6 +38,7 @@ class _CameraPageState extends State<CameraPage> {
       }
       setState(() {
         _isCameraOn = true;
+        _isNoItem = false;
       });
     }).catchError((Object e) {
       if (e is CameraException) {
@@ -80,38 +82,22 @@ class _CameraPageState extends State<CameraPage> {
     request.send().then((response) async {
       if (response.statusCode == 200) {
         final res = await http.Response.fromStream(response);
-        final data = json.decode(res.body).toList().cast<String>();
-        Map<String, int> priceCache = {};
-        Map<String, String> nameCache = {};
-        List<List<dynamic>> outputList = [];
+        final data = json.decode(res.body).toList().cast<List<dynamic>>();
 
-        for (String item in data) {
-          if (!priceCache.containsKey(item)) {
-            Map<String, dynamic> info = await fetchPriceAndNameForItem(item);
-            priceCache[item] = info['productPrice'];
-            nameCache[item] = info['productName'];
-            outputList.add([1, nameCache[item], priceCache[item]]);
-          } else if (priceCache.containsKey(item)) {
-            int currentCount = outputList
-                .firstWhere((element) => element[1] == nameCache[item])[0];
-            outputList.removeWhere((element) => element[1] == nameCache[item]);
-
-            outputList.add([
-              currentCount + 1,
-              nameCache[item],
-              priceCache[item]! * (currentCount + 1)
-            ]);
-          }
+        if (data.isNotEmpty) {
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      ListPage(listOfItems: data))).then((res) {
+            initializeCamera();
+          });
+        } else {
+          setState(() {
+            _isNoItem = true;
+          });
         }
-
-        // ignore: use_build_context_synchronously
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    ListPage(listOfItems: outputList))).then((res) {
-          initializeCamera();
-        });
       }
     });
   }
@@ -162,10 +148,43 @@ class _CameraPageState extends State<CameraPage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            LoadingAnimationWidget.beat(
-                              color: Colors.white,
-                              size: 100,
-                            )
+                            _isNoItem
+                                ? const Text(
+                                    'No items were detected.',
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                        fontSize: 16),
+                                  )
+                                : LoadingAnimationWidget.beat(
+                                    color: Colors.white,
+                                    size: 100,
+                                  ),
+                            const SizedBox(height: 50),
+                            GestureDetector(
+                              onTap: () {
+                                initializeCamera();
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(30),
+                                  ),
+                                ),
+                                height: 50,
+                                width: 150,
+                                child: Center(
+                                  child: Text(
+                                    _isNoItem ? 'TRY AGAIN' : 'CANCEL',
+                                    style: const TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
