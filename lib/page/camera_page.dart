@@ -54,23 +54,9 @@ class _CameraPageState extends State<CameraPage> {
     });
   }
 
-  Future<Map<String, dynamic>> fetchPriceAndNameForItem(String item) async {
-    var url = Uri.http(apiUrl, 'getProductInfo', {'className': item});
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      final List<dynamic> data = await json.decode(response.body);
-      Map<String, dynamic> output = data.first;
-      return output;
-    } else {
-      throw Exception('Failed to load price for $item');
-    }
-  }
-
   void detectItem(image) async {
-    var url = Uri.http(apiUrl, 'detect');
+    var url = Uri.http(apiUrl, 'api/objectDetection/detect');
     var request = http.MultipartRequest("POST", url);
-    // request.fields['user'] = 'blah';
     request.files.add(
       await http.MultipartFile.fromPath(
         'image_file',
