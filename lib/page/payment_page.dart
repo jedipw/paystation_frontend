@@ -4,7 +4,8 @@ import 'package:paystation_frontend/page/thanks_page.dart';
 
 
 class PaymentPage extends StatelessWidget {
-  const PaymentPage({super.key});
+  final String transactionId;
+  const PaymentPage({super.key, required this.transactionId});
 
   @override
   Widget build(BuildContext context) {
