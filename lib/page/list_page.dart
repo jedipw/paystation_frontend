@@ -1,17 +1,54 @@
-import 'package:flutter/material.dart';
-import 'payment_page.dart';
+import 'dart:convert';
+import 'dart:developer';
 
-class ListPage extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'payment_page.dart';
+import 'package:http/http.dart' as http;
+
+class ListPage extends StatefulWidget {
   final List<List<dynamic>> listOfItems;
   ListPage({super.key, required this.listOfItems});
 
+  @override
+  State<ListPage> createState() => _ListPageState();
+}
+
+class _ListPageState extends State<ListPage> {
+  final apiUrl = dotenv.env['API_URL']!;
+  String? transactionId;
+  Future<void> addtransaction() async {
+    log("test");
+    var url = Uri.http(apiUrl, 'api/transaction/createTransaction');
+    var totalPrice = calculateTotalPrice();
+    log(totalPrice.toString());
+
+    var jsonData = jsonEncode({'totalPrice': totalPrice});
+    var response = await http.post(url, headers: {"Content-Type": "application/json"}, body: jsonData);
+    log('Response status: ${response.statusCode}');
+    final data = json.decode(response.body);
+  log('Response body: ${data['transactionId']}');
+  setState(() {
+    transactionId = data['transactionId'];
+  });
+    for (var i = 0; i < widget.listOfItems.length; i++) {
+      var url = Uri.http(apiUrl, 'api/productToTransaction/createProductToTransaction');
+      var jsonData = jsonEncode({'transactionId': data['transactionId'], 'productName': widget.listOfItems[i][1], 'quantity': widget.listOfItems[i][0]});
+      var response = await http.post(url, headers: {"Content-Type": "application/json"}, body: jsonData);
+      log('Response status: ${response.statusCode}');
+     log('Response body: ${response.body}');
+
+    }
+  }
+
   num calculateTotalPrice() {
     num totalPrice = 0;
-    for(int i = 0; i < listOfItems.length; i++) {
-      totalPrice = totalPrice + listOfItems[i][0] * listOfItems[i][2];
+    for(int i = 0; i < widget.listOfItems.length; i++) {
+      totalPrice = totalPrice + widget.listOfItems[i][0] * widget.listOfItems[i][2];
     }
     return totalPrice;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,7 +162,7 @@ class ListPage extends StatelessWidget {
                   ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: listOfItems.length,
+                    itemCount: widget.listOfItems.length,
                     itemBuilder: (context, index) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -135,7 +172,7 @@ class ListPage extends StatelessWidget {
                             flex:
                                 1, // Added flex property to allow the '2' to expand independently
                             child: Text(
-                              listOfItems[index][0].toString(),
+                              widget.listOfItems[index][0].toString(),
                               style: const TextStyle(
                                 fontSize: 17,
                                 color: Colors.black,
@@ -150,7 +187,7 @@ class ListPage extends StatelessWidget {
                             flex:
                                 3, // Added flex property to allow 'MONAMI Jumbo highlighter' to expand
                             child: Text(
-                              listOfItems[index][1],
+                              widget.listOfItems[index][1],
                               style: const TextStyle(
                                 fontSize: 17,
                                 color: Colors.black,
@@ -167,7 +204,7 @@ class ListPage extends StatelessWidget {
                                   horizontal:
                                       45.0), // Adjust the padding as needed
                               child: Text(
-                                "${listOfItems[index][2]}.00"
+                                "${widget.listOfItems[index][2]}.00"
                                     .toString(), // Add your custom text here
                                 style: const TextStyle(
                                   fontSize: 17,
@@ -248,12 +285,13 @@ class ListPage extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.push(
+                          addtransaction().then((value) => Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const PaymentPage(),
+                              builder: (context) => PaymentPage(transactionId: transactionId!),
                             ),
-                          );
+                          ));
+                      
                         },
                         child: const Text(
                           'CHECK OUT',
