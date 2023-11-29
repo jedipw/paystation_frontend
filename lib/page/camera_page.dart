@@ -1,8 +1,13 @@
+import 'dart:convert';
 import 'dart:developer';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:paystation_frontend/page/list_page.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 class CameraPage extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -14,16 +19,27 @@ class CameraPage extends StatefulWidget {
 
 class _CameraPageState extends State<CameraPage> {
   late CameraController _controller;
+  bool _isFlashOn = false;
+  bool _isCameraOn = false;
+  bool _isNoItem = false;
+  final apiUrl = dotenv.env['API_URL']!;
 
   @override
   void initState() {
     super.initState();
+    initializeCamera();
+  }
+
+  void initializeCamera() {
     _controller = CameraController(widget.cameras[0], ResolutionPreset.max);
     _controller.initialize().then((_) {
       if (!mounted) {
         return;
       }
-      setState(() {});
+      setState(() {
+        _isCameraOn = true;
+        _isNoItem = false;
+      });
     }).catchError((Object e) {
       if (e is CameraException) {
         switch (e.code) {
@@ -38,53 +54,215 @@ class _CameraPageState extends State<CameraPage> {
     });
   }
 
+  void detectItem(image) async {
+    var url = Uri.http(apiUrl, 'api/objectDetection/detect');
+    var request = http.MultipartRequest("POST", url);
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'image_file',
+        image.path,
+        contentType: MediaType('image', 'jpeg'),
+      ),
+    );
+
+    request.send().then((response) async {
+      if (response.statusCode == 200) {
+        final res = await http.Response.fromStream(response);
+        final data = json.decode(res.body).toList().cast<List<dynamic>>();
+
+        if (data.isNotEmpty) {
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      ListPage(listOfItems: data))).then((res) {
+            initializeCamera();
+          });
+        } else {
+          setState(() {
+            _isNoItem = true;
+          });
+        }
+      }
+    });
+  }
+
+  Future _pickImageFromGallery() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (returnedImage!.path.isNotEmpty) {
+      setState(() {
+        _isFlashOn = false;
+        _isCameraOn = false;
+        _controller.dispose();
+      });
+      detectItem(returnedImage);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    var camera = _controller.value;
+    // fetch screen size
+    final size = MediaQuery.of(context).size;
+
+    // calculate scale depending on screen and camera ratios
+    // this is actually size.aspectRatio / (1 / camera.aspectRatio)
+    // because camera preview size is received as landscape
+    // but we're calculating for portrait orientation
+    var scale = 0.0;
+    if (_controller.value.isInitialized) {
+      scale = size.aspectRatio * (camera.aspectRatio);
+    }
+
+    // to prevent scaling down, invert the value
+    if (scale < 1) scale = 1 / scale;
+
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
-          SizedBox(
-            height: double.infinity,
-            child: CameraPreview(_controller),
-          ),
-          Positioned(
-            bottom: 0,
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(0, 30, 0, 40),
-              width: MediaQuery.of(context).size.width,
-              color: const Color.fromARGB(150, 0, 0, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleButton(
-                    onTap: () async {
-                      if (!_controller.value.isInitialized) {
-                        return;
-                      }
-                      if (_controller.value.isTakingPicture) {
-                        return;
-                      }
-
-                      try {
-                        await _controller.setFlashMode(FlashMode.auto);
-                        XFile picture = await _controller.takePicture();
-                        // ignore: use_build_context_synchronously
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  const ListPage()),
-                        );
-                      } on CameraException catch (e) {
-                        debugPrint("Error occured while taking picture: $e");
-                        return;
-                      }
-                    },
-                  ),
-                ],
-              ),
+          Transform.scale(
+            scale: scale,
+            child: Center(
+              child: _isCameraOn
+                  ? CameraPreview(_controller)
+                  : Container(
+                      color: Colors.black,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _isNoItem
+                                ? const Text(
+                                    'No items were detected.',
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                        fontSize: 16),
+                                  )
+                                : LoadingAnimationWidget.beat(
+                                    color: Colors.white,
+                                    size: 100,
+                                  ),
+                            const SizedBox(height: 50),
+                            GestureDetector(
+                              onTap: () {
+                                initializeCamera();
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(30),
+                                  ),
+                                ),
+                                height: 50,
+                                width: 150,
+                                child: Center(
+                                  child: Text(
+                                    _isNoItem ? 'TRY AGAIN' : 'CANCEL',
+                                    style: const TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
             ),
-          )
+          ),
+          _isCameraOn
+              ? Positioned(
+                  top: 0,
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(10, 40, 0, 5),
+                    width: MediaQuery.of(context).size.width,
+                    color: const Color.fromARGB(150, 0, 0, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _isFlashOn = !_isFlashOn;
+                              if (_isFlashOn) {
+                                _controller.setFlashMode(FlashMode.torch);
+                              } else {
+                                _controller.setFlashMode(FlashMode.off);
+                              }
+                            });
+                          },
+                          icon: Icon(
+                            _isFlashOn
+                                ? Icons.flash_on_outlined
+                                : Icons.flash_off_outlined,
+                            color: Colors.white,
+                            size: 32,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              : Container(),
+          _isCameraOn
+              ? Positioned(
+                  bottom: 0,
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(0, 30, 0, 40),
+                    width: MediaQuery.of(context).size.width,
+                    color: const Color.fromARGB(150, 0, 0, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.image,
+                                  size: 50, color: Colors.white),
+                              onPressed: () {
+                                _pickImageFromGallery();
+                              },
+                            ),
+                            const SizedBox(height: 25)
+                          ],
+                        ),
+                        CircleButton(
+                          onTap: () async {
+                            if (!_controller.value.isInitialized) {
+                              return;
+                            }
+                            if (_controller.value.isTakingPicture) {
+                              return;
+                            }
+
+                            try {
+                              XFile picture = await _controller.takePicture();
+                              setState(() {
+                                _isFlashOn = false;
+                                _isCameraOn = false;
+                                _controller.dispose();
+                              });
+                              detectItem(picture);
+                            } on CameraException catch (e) {
+                              debugPrint(
+                                  "Error occured while taking picture: $e");
+                              return;
+                            }
+                          },
+                        ),
+                        const SizedBox(width: 50, height: 50),
+                      ],
+                    ),
+                  ),
+                )
+              : Container()
         ],
       ),
     );
@@ -113,7 +291,7 @@ class CircleButton extends StatelessWidget {
           ),
         ),
         child: Container(
-          margin: EdgeInsets.all(2.0), // Adjust the margin as needed
+          margin: const EdgeInsets.all(2.0), // Adjust the margin as needed
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.white,

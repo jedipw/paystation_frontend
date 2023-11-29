@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:paystation_frontend/page/fail_page.dart';
-import 'complete_page.dart';
+import 'package:paystation_frontend/page/thanks_page.dart';
+
 
 class PaymentPage extends StatelessWidget {
-  const PaymentPage({super.key});
+  final String transactionId;
+  const PaymentPage({super.key, required this.transactionId});
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +23,12 @@ class PaymentPage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             TextButton(
-              child: const Text('Complete Page'),
+              child: const Text('Thanks Page'),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => const CompletePage()),
+                      builder: (BuildContext context) => const ThanksPage()),
                 );
               },
             ),
