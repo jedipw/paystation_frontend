@@ -24,27 +24,34 @@ class _ListPageState extends State<ListPage> {
     log(totalPrice.toString());
 
     var jsonData = jsonEncode({'totalPrice': totalPrice});
-    var response = await http.post(url, headers: {"Content-Type": "application/json"}, body: jsonData);
+    var response = await http.post(url,
+        headers: {"Content-Type": "application/json"}, body: jsonData);
     log('Response status: ${response.statusCode}');
     final data = json.decode(response.body);
-  log('Response body: ${data['transactionId']}');
-  setState(() {
-    transactionId = data['transactionId'];
-  });
+    log('Response body: ${data['transactionId']}');
+    setState(() {
+      transactionId = data['transactionId'];
+    });
     for (var i = 0; i < widget.listOfItems.length; i++) {
-      var url = Uri.http(apiUrl, 'api/productToTransaction/createProductToTransaction');
-      var jsonData = jsonEncode({'transactionId': data['transactionId'], 'productName': widget.listOfItems[i][1], 'quantity': widget.listOfItems[i][0]});
-      var response = await http.post(url, headers: {"Content-Type": "application/json"}, body: jsonData);
+      var url = Uri.http(
+          apiUrl, 'api/productToTransaction/createProductToTransaction');
+      var jsonData = jsonEncode({
+        'transactionId': data['transactionId'],
+        'productName': widget.listOfItems[i][1],
+        'quantity': widget.listOfItems[i][0]
+      });
+      var response = await http.post(url,
+          headers: {"Content-Type": "application/json"}, body: jsonData);
       log('Response status: ${response.statusCode}');
-     log('Response body: ${response.body}');
-
+      log('Response body: ${response.body}');
     }
   }
 
   num calculateTotalPrice() {
     num totalPrice = 0;
-    for(int i = 0; i < widget.listOfItems.length; i++) {
-      totalPrice = totalPrice + widget.listOfItems[i][0] * widget.listOfItems[i][2];
+    for (int i = 0; i < widget.listOfItems.length; i++) {
+      totalPrice =
+          totalPrice + widget.listOfItems[i][0] * widget.listOfItems[i][2];
     }
     return totalPrice;
   }
@@ -164,48 +171,17 @@ class _ListPageState extends State<ListPage> {
                     shrinkWrap: true,
                     itemCount: widget.listOfItems.length,
                     itemBuilder: (context, index) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          const SizedBox(width: 60),
-                          Expanded(
-                            flex:
-                                1, // Added flex property to allow the '2' to expand independently
-                            child: Text(
-                              widget.listOfItems[index][0].toString(),
-                              style: const TextStyle(
-                                fontSize: 17,
-                                color: Colors.black,
-                                fontFamily: 'Poppins',
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                              width:
-                                  10), // Added space between '2' and 'MONAMI Jumbo highlighter'
-                          Expanded(
-                            flex:
-                                3, // Added flex property to allow 'MONAMI Jumbo highlighter' to expand
-                            child: Text(
-                              widget.listOfItems[index][1],
-                              style: const TextStyle(
-                                fontSize: 17,
-                                color: Colors.black,
-                                fontFamily: 'Poppins',
-                              ),
-                              overflow: TextOverflow.fade,
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment
-                                .centerRight, // Adjust the alignment to move '80.00' closer to the right edge
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal:
-                                      45.0), // Adjust the padding as needed
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const SizedBox(width: 60),
+                            Expanded(
+                              flex:
+                                  1, // Added flex property to allow the '2' to expand independently
                               child: Text(
-                                "${widget.listOfItems[index][2]}.00"
-                                    .toString(), // Add your custom text here
+                                widget.listOfItems[index][0].toString(),
                                 style: const TextStyle(
                                   fontSize: 17,
                                   color: Colors.black,
@@ -213,96 +189,133 @@ class _ListPageState extends State<ListPage> {
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                            const SizedBox(
+                                width:
+                                    10), // Added space between '2' and 'MONAMI Jumbo highlighter'
+                            Expanded(
+                              flex:
+                                  3, // Added flex property to allow 'MONAMI Jumbo highlighter' to expand
+                              child: Text(
+                                widget.listOfItems[index][1],
+                                style: const TextStyle(
+                                  fontSize: 17,
+                                  color: Colors.black,
+                                  fontFamily: 'Poppins',
+                                ),
+                                overflow: TextOverflow.fade,
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment
+                                  .centerRight, // Adjust the alignment to move '80.00' closer to the right edge
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal:
+                                        45.0), // Adjust the padding as needed
+                                child: Text(
+                                  "${widget.listOfItems[index][2]}.00"
+                                      .toString(), // Add your custom text here
+                                  style: const TextStyle(
+                                    fontSize: 17,
+                                    color: Colors.black,
+                                    fontFamily: 'Poppins',
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),
                   const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                          40, 10, 40, 0), // Adjust the padding as needed
-                      child: CustomPaint(
-                        size: const Size(double.infinity, 16),
-                        painter: DashedLinePainter(),
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                        40, 10, 40, 0), // Adjust the padding as needed
+                    child: CustomPaint(
+                      size: const Size(double.infinity, 16),
+                      painter: DashedLinePainter(),
                     ),
-                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        const SizedBox(width: 45),
-                        const Text(
-                          'Total',
-                          style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Poppins',
-                          ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      const SizedBox(width: 45),
+                      const Text(
+                        'Total',
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins',
                         ),
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 40.0), // Adjust the padding as needed
-                              child: Text(
-                                "${calculateTotalPrice().toString()}.00", // Add your custom text here
-                                style: const TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Poppins',
-                                ),
+                      ),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal:
+                                    40.0), // Adjust the padding as needed
+                            child: Text(
+                              "${calculateTotalPrice().toString()}.00", // Add your custom text here
+                              style: const TextStyle(
+                                fontSize: 25,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Poppins',
                               ),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                          40, 15, 40, 0), // Adjust the padding as needed
-                      child: CustomPaint(
-                        size: const Size(double.infinity, 16),
-                        painter: DashedLinePainter(),
                       ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                        40, 15, 40, 0), // Adjust the padding as needed
+                    child: CustomPaint(
+                      size: const Size(double.infinity, 16),
+                      painter: DashedLinePainter(),
                     ),
- Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 80, 0, 40), // Add space above the button
-                      child: TextButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color.fromARGB(255, 0x1C, 0x85, 0x0A), // Green color for the button
-                          ),
-                          shape: MaterialStateProperty.all<OutlinedBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                            ),
-                          ),
-                          minimumSize: MaterialStateProperty.all<Size>(
-                            const Size(276, 0), // Set the minimum width to 276
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                        0, 80, 0, 40), // Add space above the button
+                    child: TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color.fromARGB(255, 0x1C, 0x85,
+                              0x0A), // Green color for the button
+                        ),
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
                           ),
                         ),
-                        onPressed: () {
-                          addtransaction().then((value) => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PaymentPage(transactionId: transactionId!),
-                            ),
-                          ));
-                      
-                        },
-                        child: const Text(
-                          'CHECK OUT',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                             fontFamily: 'Poppins',
-                          ),
+                        minimumSize: MaterialStateProperty.all<Size>(
+                          const Size(276, 0), // Set the minimum width to 276
+                        ),
+                      ),
+                      onPressed: () {
+                        addtransaction().then((value) => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    PaymentPage(transactionId: transactionId!),
+                              ),
+                            ));
+                      },
+                      child: const Text(
+                        'CHECK OUT',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontFamily: 'Poppins',
                         ),
                       ),
                     ),
+                  ),
                 ],
               ),
             ),
