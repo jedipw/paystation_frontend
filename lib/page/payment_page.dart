@@ -46,14 +46,27 @@ class PaymentPage extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(
-                    top: 65), // Adjust the top padding as needed
-                child: Text(
-                  'PayStationdsadasd',
-                  style: TextStyle(
-                      color: Colors.white, // Text color
-                      fontSize: 25,
-                      fontFamily: 'Pacifico' // Text size
+                  top: 135,
+                ), // Adjust the top padding as needed
+                child: Row(
+                  children: [
+                    Text(
+                      'Status: ',
+                      style: TextStyle(
+                        color: Colors.white, // Text color
+                        fontSize: 20,
+                        fontFamily: 'Poppins', // Text size
                       ),
+                    ),
+                    Text(
+                      'Waiting for Payment...', // Replace with your actual status
+                      style: TextStyle(
+                        color: Colors.white, // Text color
+                        fontSize: 20,
+                        fontFamily: 'Poppins', // Text size
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -73,7 +86,7 @@ class PaymentPage extends StatelessWidget {
               physics: ScrollPhysics(),
               child: Column(
                 children: [
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
@@ -94,11 +107,11 @@ class PaymentPage extends StatelessWidget {
                       painter: DashedLinePainter(),
                     ),
                   ),
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      const SizedBox(width: 45),
-                      const Text(
+                      SizedBox(width: 45),
+                      Text(
                         'Total',
                         style: TextStyle(
                           fontSize: 25,
@@ -111,12 +124,12 @@ class PaymentPage extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                                 horizontal:
                                     40.0), // Adjust the padding as needed
                             child: Text(
                               "259.00", // Add your custom text here
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 25,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
@@ -201,7 +214,54 @@ class PaymentPage extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(
-                        0, 80, 0, 40), // Add space above the button
+                      0,
+                      30,
+                      0,
+                      20,
+                    ), // Add space above the button
+                    child: TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          Color.fromARGB(255, 255, 255, 255),
+                          // Green color for the button
+                        ),
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                            side: const BorderSide(
+                              color: Color.fromARGB(255, 0x94, 0x51,
+                                  0x31), // Set the border color here
+                              width: 3.0, // Set the border width here
+                            ),
+                          ),
+                        ),
+                        minimumSize: MaterialStateProperty.all<Size>(
+                          const Size(276, 0),
+                          // Set the minimum width to 276
+                        ),
+                      ),
+                      onPressed: () {
+                        // addtransaction().then((value) => Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) =>
+                        //         PaymentPage(transactionId: transactionId!),
+                        //   ),
+                        // ));
+                      },
+                      child: const Text(
+                        '1234-5678-9012',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 0, 0, 0),
+                          fontSize: 22,
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                        0, 0, 0, 40), // Add space above the button
                     child: TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
@@ -238,7 +298,7 @@ class PaymentPage extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(
-                        0, 80, 0, 40), // Add space above the button
+                        0, 50, 0, 40), // Add space above the button
                     child: TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
