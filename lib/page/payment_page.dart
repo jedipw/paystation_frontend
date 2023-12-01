@@ -221,9 +221,9 @@ class PaymentPage extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(
-                      40,
+                      50,
                       30,
-                      40,
+                      50,
                       20,
                     ), // Add space above the button
                     child: TextButton(
@@ -262,25 +262,34 @@ class PaymentPage extends StatelessWidget {
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                         
-                           // Add some space between the icon and text
                           Text(
                             '1234-5678-9012',
                             style: TextStyle(
                               color: Color.fromARGB(255, 0, 0, 0),
-                              fontSize: 22,
+                              fontSize: 20,
                               fontFamily: 'Poppins',
                             ),
                           ),
-                          SizedBox(
-                              width:
-                                  5),
-                              Icon(
-                            Icons
-                                .arrow_back_ios, // Replace with the desired icon
+                          SizedBox(width: 6),
+                          Icon(
+                            Icons.copy_all_outlined,
                             color: Color.fromARGB(255, 0, 0, 0),
-                            size: 22, // Adjust the size as needed
-                          ),     
+                            size: 30, // Adjust the size as needed
+                          ),
+                           // Add some space between the icon and text
+                          // const Text(
+                          //   '1234-5678-9012',
+                          //   style: TextStyle(
+                          //     color: Color.fromARGB(255, 0, 0, 0),
+                          //     fontSize: 22,
+                          //     fontFamily: 'Poppins',
+                          //   ),
+                          // ),
+                          // const SizedBox(
+                          //     width:
+                          //         5),
+                          //   Image.asset('./assets/icons/content_copy.png')
+                            
                         ],
                       ),
                     ),
@@ -352,7 +361,7 @@ class PaymentPage extends StatelessWidget {
                           ),
                         ),
                         minimumSize: MaterialStateProperty.all<Size>(
-                          const Size(276, 0), // Set the minimum width to 276
+                          const Size(240, 0), // Set the minimum width to 276
                         ),
                       ),
                       onPressed: () {
