@@ -41,24 +41,31 @@ class PaymentPage extends StatelessWidget {
               ),
             ],
           ),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 135,
-                ), // Adjust the top padding as needed
-                child: Row(
-                  children: [
-                    Text(
-                      'Status: ',
-                      style: TextStyle(
-                        color: Colors.white, // Text color
-                        fontSize: 20,
-                        fontFamily: 'Poppins', // Text size
-                      ),
+          Container(
+            padding:
+                EdgeInsets.only(top: 135), // Adjust the top padding as needed
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Status: ',
+                  style: TextStyle(
+                    color: Colors.white, // Text color
+                    fontSize: 20,
+                    fontFamily: 'Poppins', // Text size
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 8), // Adjust the inner padding as needed
+                  child: Container(
+                    padding: EdgeInsets.all(13), // Adjust the padding as needed
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                          25), // Adjust the radius as needed
+                      color: Color.fromARGB(255, 178, 0, 0),
                     ),
-                    Text(
+                    child: const Text(
                       'Waiting for Payment...', // Replace with your actual status
                       style: TextStyle(
                         color: Colors.white, // Text color
@@ -66,14 +73,14 @@ class PaymentPage extends StatelessWidget {
                         fontFamily: 'Poppins', // Text size
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Container(
             height: MediaQuery.of(context).size.height - 135,
-            margin: const EdgeInsets.only(top: 195),
+            margin: const EdgeInsets.only(top: 210),
             padding: const EdgeInsets.only(top: 30),
             decoration: const BoxDecoration(
               color: Colors.white,
@@ -229,8 +236,8 @@ class PaymentPage extends StatelessWidget {
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
                             side: const BorderSide(
-                              color: Color.fromARGB(255, 0x94, 0x51,
-                                  0x31), // Set the border color here
+                              color: Color.fromARGB(255, 0x94, 0x51, 0x31),
+                              // Set the border color here
                               width: 3.0, // Set the border width here
                             ),
                           ),
@@ -249,13 +256,27 @@ class PaymentPage extends StatelessWidget {
                         //   ),
                         // ));
                       },
-                      child: const Text(
-                        '1234-5678-9012',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0),
-                          fontSize: 22,
-                          fontFamily: 'Poppins',
-                        ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            icon: Icon(Icons
+                                .arrow_back_ios), // Replace with the desired icon
+                            color: Color.fromARGB(255, 0, 0, 0),
+                            size: 22, // Adjust the size as needed
+                          ),
+                          SizedBox(
+                              width:
+                                  5), // Add some space between the icon and text
+                          Text(
+                            '1234-5678-9012',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 0, 0, 0),
+                              fontSize: 22,
+                              fontFamily: 'Poppins',
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
