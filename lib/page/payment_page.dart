@@ -43,7 +43,7 @@ class PaymentPage extends StatelessWidget {
           ),
           Container(
             padding:
-                EdgeInsets.only(top: 135), // Adjust the top padding as needed
+                const EdgeInsets.only(top: 135), // Adjust the top padding as needed
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -56,14 +56,14 @@ class PaymentPage extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                       horizontal: 8), // Adjust the inner padding as needed
                   child: Container(
-                    padding: EdgeInsets.all(13), // Adjust the padding as needed
+                    padding: const EdgeInsets.all(13), // Adjust the padding as needed
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(
                           25), // Adjust the radius as needed
-                      color: Color.fromARGB(255, 178, 0, 0),
+                      color: const Color.fromARGB(255, 178, 0, 0),
                     ),
                     child: const Text(
                       'Waiting for Payment...', // Replace with your actual status
@@ -90,7 +90,7 @@ class PaymentPage extends StatelessWidget {
               ),
             ),
             child: SingleChildScrollView(
-              physics: ScrollPhysics(),
+              physics: const ScrollPhysics(),
               child: Column(
                 children: [
                   const Row(
@@ -221,22 +221,25 @@ class PaymentPage extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(
-                      0,
+                      40,
                       30,
-                      0,
+                      40,
                       20,
                     ), // Add space above the button
                     child: TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
-                          Color.fromARGB(255, 255, 255, 255),
+                          const Color.fromARGB(255, 255, 255, 255),
                           // Green color for the button
                         ),
                         shape: MaterialStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
+                            borderRadius: BorderRadius.circular(30.0),
                             side: const BorderSide(
-                              color: Color.fromARGB(255, 0x94, 0x51, 0x31),
+                              color: Color.fromRGBO(0x94, // Red
+                            0x51, // Green
+                            0x31, // Blue
+                            0x80 / 255.0,),
                               // Set the border color here
                               width: 3.0, // Set the border width here
                             ),
@@ -259,15 +262,8 @@ class PaymentPage extends StatelessWidget {
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            icon: Icon(Icons
-                                .arrow_back_ios), // Replace with the desired icon
-                            color: Color.fromARGB(255, 0, 0, 0),
-                            size: 22, // Adjust the size as needed
-                          ),
-                          SizedBox(
-                              width:
-                                  5), // Add some space between the icon and text
+                         
+                           // Add some space between the icon and text
                           Text(
                             '1234-5678-9012',
                             style: TextStyle(
@@ -276,27 +272,38 @@ class PaymentPage extends StatelessWidget {
                               fontFamily: 'Poppins',
                             ),
                           ),
+                          SizedBox(
+                              width:
+                                  5),
+                              Icon(
+                            Icons
+                                .arrow_back_ios, // Replace with the desired icon
+                            color: Color.fromARGB(255, 0, 0, 0),
+                            size: 22, // Adjust the size as needed
+                          ),     
                         ],
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                        0, 0, 0, 40), // Add space above the button
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(
+                        100, 0, 100, 40), // Add space above the button
                     child: TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromARGB(255, 0x94, 0x51,
-                              0x31), // Green color for the button
+                          const Color.fromRGBO(
+                            0x94, // Red
+                            0x51, // Green
+                            0x31, // Blue
+                            0x80 / 255.0, // Alpha (transparency)
+                          ), // Green color for the button
                         ),
                         shape: MaterialStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
+                            borderRadius: BorderRadius.circular(15.0),
                           ),
                         ),
-                        minimumSize: MaterialStateProperty.all<Size>(
-                          const Size(276, 0), // Set the minimum width to 276
-                        ),
+
                       ),
                       onPressed: () {
                         // addtransaction().then((value) => Navigator.push(
@@ -307,14 +314,28 @@ class PaymentPage extends StatelessWidget {
                         //       ),
                         //     ));
                       },
-                      child: const Text(
-                        'Upload Slip',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontFamily: 'Poppins',
-                        ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Upload Slip',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 0, 0, 0),
+                              fontSize: 20,
+                              fontFamily: 'Poppins',
+                            ),
+                          ),
+                          SizedBox(width: 2),
+                          Icon(
+                            Icons.upload,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                            size: 30, // Adjust the size as needed
+                          ),
+                          
+                          
+                        ],
                       ),
+                      // Add some spacing between the icon and text
                     ),
                   ),
                   Padding(
@@ -323,8 +344,7 @@ class PaymentPage extends StatelessWidget {
                     child: TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromARGB(255, 0x94, 0x51,
-                              0x31), // Green color for the button
+                          const Color(0xFF684536),
                         ),
                         shape: MaterialStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(
