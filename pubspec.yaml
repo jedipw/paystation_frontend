@@ -17,6 +17,7 @@ dependencies:
   image: ^4.1.3
   image_picker: ^1.0.4
   loading_animation_widget: ^1.2.0+4
+  pytorch_lite: ^4.2.3
 
 dev_dependencies:
   flutter_test:
@@ -51,3 +52,4 @@ flutter:
   uses-material-design: true
   assets:
     - .env
+    - assets/
