@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paystation_frontend/constants/color.dart';
 
 class FailPage extends StatelessWidget {
   const FailPage({super.key});
@@ -10,7 +11,7 @@ class FailPage extends StatelessWidget {
         children: <Widget>[
           // Background Container with red color
           Container(
-            color: const Color.fromARGB(255, 0x94, 0x51, 0x31),
+            color: primaryBrown,
           ),
           const Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -53,7 +54,7 @@ class FailPage extends StatelessWidget {
                 width: 150, // Adjust the size of the circle as needed
                 height: 150, // Adjust the size of the circle as needed
                 decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 178, 0, 0),
+                  color: primaryRed,
                   shape: BoxShape.circle,
                 ),
                 child: const Center(
@@ -110,7 +111,7 @@ class FailPage extends StatelessWidget {
               child: TextButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
-                    const Color(0xFF684536), // Green color for the button
+                    darkBrown, // Green color for the button
                   ),
                   shape: MaterialStateProperty.all<OutlinedBorder>(
                     RoundedRectangleBorder(

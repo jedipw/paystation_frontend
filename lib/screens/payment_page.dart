@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:paystation_frontend/constants/color.dart';
 import 'package:paystation_frontend/screens/fail_page.dart';
 import 'package:paystation_frontend/screens/thanks_page.dart';
 import 'package:http/http.dart' as http;
@@ -84,7 +85,7 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 0x94, 0x51, 0x31),
+      backgroundColor: primaryBrown,
       body: Stack(
         children: [
           Padding(
@@ -132,7 +133,7 @@ class _PaymentPageState extends State<PaymentPage> {
                     padding: const EdgeInsets.all(13),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
-                      color: const Color.fromARGB(255, 178, 0, 0),
+                      color: primaryRed,
                     ),
                     child: const Text(
                       'Waiting for Payment...',
@@ -284,13 +285,8 @@ class _PaymentPageState extends State<PaymentPage> {
                         shape: MaterialStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0),
-                            side: const BorderSide(
-                              color: Color.fromRGBO(
-                                0x94, // Red
-                                0x51, // Green
-                                0x31, // Blue
-                                0x80 / 255.0,
-                              ),
+                            side: BorderSide(
+                              color: lightBrown,
                               // Set the border color here
                               width: 3.0, // Set the border width here
                             ),
@@ -336,12 +332,7 @@ class _PaymentPageState extends State<PaymentPage> {
                     child: TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromRGBO(
-                            0x94, // Red
-                            0x51, // Green
-                            0x31, // Blue
-                            0x80 / 255.0, // Alpha (transparency)
-                          ),
+                          lightBrown,
                         ),
                         shape: MaterialStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(
@@ -400,7 +391,7 @@ class _PaymentPageState extends State<PaymentPage> {
                     child: TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color(0xFF684536),
+                          darkBrown,
                         ),
                         shape: MaterialStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(

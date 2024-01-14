@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:paystation_frontend/constants/color.dart';
 
 class ThanksPage extends StatelessWidget {
   final String transactionId;
@@ -19,7 +20,7 @@ class ThanksPage extends StatelessWidget {
           children: <Widget>[
             // Background Container with red color
             Container(
-              color: const Color.fromARGB(255, 0x94, 0x51, 0x31),
+              color: primaryBrown,
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(15, 60, 0, 0),
@@ -74,7 +75,7 @@ class ThanksPage extends StatelessWidget {
                   width: 150,
                   height: 150,
                   decoration: const BoxDecoration(
-                    color: Color(0xFF187002),
+                    color: primaryGreen,
                     shape: BoxShape.circle,
                   ),
                   child: const Center(
@@ -179,7 +180,7 @@ class ThanksPage extends StatelessWidget {
                                 '$totalPrice.00',
                                 style: const TextStyle(
                                   fontSize: 20,
-                                  color: Color(0xFF187002),
+                                  color: primaryGreen,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Poppins',
                                 ),

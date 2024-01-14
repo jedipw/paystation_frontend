@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:paystation_frontend/constants/color.dart';
 import 'payment_page.dart';
 import 'package:http/http.dart' as http;
 
@@ -52,12 +53,11 @@ class _ListPageState extends State<ListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 0x94, 0x51, 0x31),
+      backgroundColor: primaryBrown,
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(
-                15, 60, 0, 0),
+            padding: const EdgeInsets.fromLTRB(15, 60, 0, 0),
             child: IconButton(
               icon: const Icon(Icons.arrow_back_ios),
               onPressed: () {
@@ -70,8 +70,7 @@ class _ListPageState extends State<ListPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(
-                    top: 65),
+                padding: EdgeInsets.only(top: 65),
                 child: Text(
                   'PayStation',
                   style: TextStyle(
@@ -103,17 +102,12 @@ class _ListPageState extends State<ListPage> {
                     children: [
                       Text(
                         'KMUTT Bookstore',
-                        style: TextStyle(
-                            fontSize: 25,
-                            fontFamily:
-                                'Poppins'
-                            ),
+                        style: TextStyle(fontSize: 25, fontFamily: 'Poppins'),
                       ),
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                        40, 30, 40, 0),
+                    padding: const EdgeInsets.fromLTRB(40, 30, 40, 0),
                     child: CustomPaint(
                       size: const Size(double.infinity, 16),
                       painter: DashedLinePainter(),
@@ -152,8 +146,7 @@ class _ListPageState extends State<ListPage> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                        40, 10, 40, 0),
+                    padding: const EdgeInsets.fromLTRB(40, 10, 40, 0),
                     child: CustomPaint(
                       size: const Size(double.infinity, 16),
                       painter: DashedLinePainter(),
@@ -171,8 +164,7 @@ class _ListPageState extends State<ListPage> {
                           children: <Widget>[
                             const SizedBox(width: 60),
                             Expanded(
-                              flex:
-                                  1,
+                              flex: 1,
                               child: Text(
                                 widget.listOfItems[index][0].toString(),
                                 style: const TextStyle(
@@ -182,12 +174,9 @@ class _ListPageState extends State<ListPage> {
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                                width:
-                                    10),
+                            const SizedBox(width: 10),
                             Expanded(
-                              flex:
-                                  3,
+                              flex: 3,
                               child: Text(
                                 widget.listOfItems[index][1],
                                 style: const TextStyle(
@@ -199,12 +188,10 @@ class _ListPageState extends State<ListPage> {
                               ),
                             ),
                             Align(
-                              alignment: Alignment
-                                  .centerRight,
+                              alignment: Alignment.centerRight,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal:
-                                        45.0),
+                                    horizontal: 45.0),
                                 child: Text(
                                   "${widget.listOfItems[index][2]}.00"
                                       .toString(),
@@ -223,8 +210,7 @@ class _ListPageState extends State<ListPage> {
                   ),
                   const SizedBox(height: 20),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                        40, 10, 40, 0),
+                    padding: const EdgeInsets.fromLTRB(40, 10, 40, 0),
                     child: CustomPaint(
                       size: const Size(double.infinity, 16),
                       painter: DashedLinePainter(),
@@ -247,9 +233,8 @@ class _ListPageState extends State<ListPage> {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal:
-                                    40.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 40.0),
                             child: Text(
                               "${calculateTotalPrice().toString()}.00",
                               style: const TextStyle(
@@ -265,21 +250,18 @@ class _ListPageState extends State<ListPage> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                        40, 15, 40, 0),
+                    padding: const EdgeInsets.fromLTRB(40, 15, 40, 0),
                     child: CustomPaint(
                       size: const Size(double.infinity, 16),
                       painter: DashedLinePainter(),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                        0, 80, 0, 40),
+                    padding: const EdgeInsets.fromLTRB(0, 80, 0, 40),
                     child: TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromARGB(255, 0x1C, 0x85,
-                              0x0A),
+                          primaryGreen,
                         ),
                         shape: MaterialStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(
