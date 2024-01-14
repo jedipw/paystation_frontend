@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:paystation_frontend/page/list_page.dart';
@@ -30,19 +29,9 @@ class _CameraPageState extends State<CameraPage> {
   int cameraCount = 0;
   List<ResultObjectDetection?> objDetect = [];
 
-  // late ModelObjectDetection _objectModel;
-
-  // initPyTorch() async {
-  //   _objectModel = await PytorchLite.loadObjectDetectionModel(
-  //       "assets/models/detect.torchscript", 20, 640, 640,
-  //       labelPath: "assets/labels/labels.txt",
-  //       objectDetectionModelType: ObjectDetectionModelType.yolov8);
-  // }
-
   @override
   void initState() {
     super.initState();
-    // initPyTorch();
     initializeCamera();
   }
 
@@ -58,11 +47,6 @@ class _CameraPageState extends State<CameraPage> {
     setState(() {
       objDetect = objDetection;
     });
-
-    for (int i = 0; i < objDetect.length; i++) {
-      print(
-          "$i: Class Name: ${objDetect[i]!.className}, L: ${objDetect[i]!.rect.left}, R: ${objDetect[i]!.rect.right}, T: ${objDetect[i]!.rect.top}, B: ${objDetect[i]!.rect.bottom} , Score: ${objDetect[i]!.score}");
-    }
   }
 
   void initializeCamera() async {
@@ -94,13 +78,10 @@ class _CameraPageState extends State<CameraPage> {
       });
 
       Timer.periodic(const Duration(milliseconds: 2000), (Timer timer) {
-        // Call your function here
         if (_isRealTime) {
           realTimeDetection(objectModel);
         }
       });
-
-      // Call your function here
     }).catchError((Object e) {
       if (e is CameraException) {
         switch (e.code) {
@@ -376,8 +357,6 @@ class _CameraPageState extends State<CameraPage> {
     double factorX = screen.width;
     double factorY = screen.height;
 
-    Color _blue = Colors.blue;
-
     return objDetect
         .map((re) => Positioned(
             left: re!.rect.left * factorX,
@@ -433,17 +412,17 @@ class CircleButton extends StatelessWidget {
           shape: BoxShape.circle,
           border: Border.all(
             color: Colors.white, // Black border around the white circle
-            width: 5.0, // Adjust the width as needed
+            width: 5.0,
           ),
         ),
         child: Container(
-          margin: const EdgeInsets.all(2.0), // Adjust the margin as needed
+          margin: const EdgeInsets.all(2.0),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.white,
             border: Border.all(
               color: Colors.white, // White border outside the black border
-              width: 2.0, // Adjust the width as needed
+              width: 2.0,
             ),
           ),
         ),

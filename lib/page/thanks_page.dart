@@ -22,8 +22,7 @@ class ThanksPage extends StatelessWidget {
               color: const Color.fromARGB(255, 0x94, 0x51, 0x31),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(
-                  15, 60, 0, 0), // Adjust the left padding as needed
+              padding: const EdgeInsets.fromLTRB(15, 60, 0, 0),
               child: IconButton(
                 icon: const Icon(Icons.arrow_back_ios),
                 onPressed: () {
@@ -38,8 +37,7 @@ class ThanksPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(
-                      top: 65), // Adjust the top padding as needed
+                  padding: EdgeInsets.only(top: 65),
                   child: Text(
                     'PayStation',
                     style: TextStyle(
@@ -59,8 +57,7 @@ class ThanksPage extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 decoration: const BoxDecoration(
-                  color: Colors
-                      .white, // Change this color to the background color you want
+                  color: Colors.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(37.0),
                     topRight: Radius.circular(37.0),
@@ -69,13 +66,13 @@ class ThanksPage extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: 200, // Adjust the top position as needed
+              top: 200,
               left: 0,
               right: 0,
               child: Center(
                 child: Container(
-                  width: 150, // Adjust the size of the circle as needed
-                  height: 150, // Adjust the size of the circle as needed
+                  width: 150,
+                  height: 150,
                   decoration: const BoxDecoration(
                     color: Color(0xFF187002),
                     shape: BoxShape.circle,
@@ -92,7 +89,7 @@ class ThanksPage extends StatelessWidget {
               ),
             ),
             const Positioned(
-              top: 400, // Adjust the top position as needed
+              top: 400,
               left: 0,
               right: 0,
               child: Center(
@@ -108,7 +105,7 @@ class ThanksPage extends StatelessWidget {
               ),
             ),
             const Positioned(
-              top: 470, // Adjust the top position as needed
+              top: 470,
               left: 0,
               right: 0,
               child: Align(
@@ -129,7 +126,7 @@ class ThanksPage extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: 570, // Adjust the top position as needed
+              top: 570,
               left: 0,
               right: 0,
               child: Align(
@@ -150,7 +147,7 @@ class ThanksPage extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: 595, // Adjust the top position as needed
+              top: 595,
               left: 0,
               right: 0,
               child: Center(
@@ -162,8 +159,7 @@ class ThanksPage extends StatelessWidget {
                           MainAxisAlignment.center, // Center the content
                       children: <Widget>[
                         const Padding(
-                          padding: EdgeInsets.only(
-                              left: 80), // Add padding around the text
+                          padding: EdgeInsets.only(left: 80),
                           child: Text(
                             'Amount Paid',
                             style: TextStyle(
@@ -178,10 +174,9 @@ class ThanksPage extends StatelessWidget {
                           child: Align(
                             alignment: Alignment.centerRight,
                             child: Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 100.0), // Adjust the padding as needed
+                              padding: const EdgeInsets.only(right: 100.0),
                               child: Text(
-                                '$totalPrice.00', // Add your custom text here
+                                '$totalPrice.00',
                                 style: const TextStyle(
                                   fontSize: 20,
                                   color: Color(0xFF187002),

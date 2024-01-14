@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FailPage extends StatelessWidget {
-  const FailPage({Key? key});
+  const FailPage({super.key});
 
   @override
   Widget build(BuildContext context) {

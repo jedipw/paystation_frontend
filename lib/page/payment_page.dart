@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -31,12 +29,7 @@ class _PaymentPageState extends State<PaymentPage> {
       setState(() {
         fileName = returnedImage.name;
         slip = returnedImage;
-        // _isRealTime = false;
-        // _isFlashOn = false;
-        // _isCameraOn = false;
-        // _controller.dispose();
       });
-      // detectItem(returnedImage);
     }
   }
 
@@ -91,13 +84,11 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(),
       backgroundColor: const Color.fromARGB(255, 0x94, 0x51, 0x31),
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(
-                15, 60, 0, 0), // Adjust the left padding as needed
+            padding: const EdgeInsets.fromLTRB(15, 60, 0, 0),
             child: IconButton(
               icon: const Icon(Icons.arrow_back_ios),
               onPressed: () {
@@ -110,8 +101,7 @@ class _PaymentPageState extends State<PaymentPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(
-                    top: 65), // Adjust the top padding as needed
+                padding: EdgeInsets.only(top: 65),
                 child: Text(
                   'PayStation',
                   style: TextStyle(
@@ -124,8 +114,7 @@ class _PaymentPageState extends State<PaymentPage> {
             ],
           ),
           Container(
-            padding: const EdgeInsets.only(
-                top: 135), // Adjust the top padding as needed
+            padding: const EdgeInsets.only(top: 135),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -138,18 +127,15 @@ class _PaymentPageState extends State<PaymentPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8), // Adjust the inner padding as needed
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Container(
-                    padding: const EdgeInsets.all(
-                        13), // Adjust the padding as needed
+                    padding: const EdgeInsets.all(13),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                          25), // Adjust the radius as needed
+                      borderRadius: BorderRadius.circular(25),
                       color: const Color.fromARGB(255, 178, 0, 0),
                     ),
                     child: const Text(
-                      'Waiting for Payment...', // Replace with your actual status
+                      'Waiting for Payment...',
                       style: TextStyle(
                         color: Colors.white, // Text color
                         fontSize: 20,
@@ -181,17 +167,12 @@ class _PaymentPageState extends State<PaymentPage> {
                     children: [
                       Text(
                         'KMUTT Bookstore',
-                        style: TextStyle(
-                            fontSize: 25,
-                            fontFamily:
-                                'Poppins' // Customize the font size as needed
-                            ),
+                        style: TextStyle(fontSize: 25, fontFamily: 'Poppins'),
                       ),
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                        40, 10, 40, 0), // Adjust the padding as needed
+                    padding: const EdgeInsets.fromLTRB(40, 10, 40, 0),
                     child: CustomPaint(
                       size: const Size(double.infinity, 16),
                       painter: DashedLinePainter(),
@@ -214,11 +195,10 @@ class _PaymentPageState extends State<PaymentPage> {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal:
-                                    40.0), // Adjust the padding as needed
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 40.0),
                             child: Text(
-                              "${widget.totalPrice.toString()}.00", // Add your custom text here
+                              "${widget.totalPrice.toString()}.00",
                               style: const TextStyle(
                                 fontSize: 25,
                                 color: Colors.black,
@@ -232,8 +212,7 @@ class _PaymentPageState extends State<PaymentPage> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                        40, 15, 40, 0), // Adjust the padding as needed
+                    padding: const EdgeInsets.fromLTRB(40, 15, 40, 0),
                     child: CustomPaint(
                       size: const Size(double.infinity, 16),
                       painter: DashedLinePainter(),
@@ -245,7 +224,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       0,
                       0,
                       0,
-                    ), // Adjust the top position as needed
+                    ),
                     child: const Align(
                       alignment: Alignment.center,
                       child: Column(
@@ -296,12 +275,11 @@ class _PaymentPageState extends State<PaymentPage> {
                       30,
                       50,
                       20,
-                    ), // Add space above the button
+                    ),
                     child: TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
                           const Color.fromARGB(255, 255, 255, 255),
-                          // Green color for the button
                         ),
                         shape: MaterialStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(
@@ -320,7 +298,6 @@ class _PaymentPageState extends State<PaymentPage> {
                         ),
                         minimumSize: MaterialStateProperty.all<Size>(
                           const Size(276, 0),
-                          // Set the minimum width to 276
                         ),
                       ),
                       onPressed: () async {
@@ -350,26 +327,12 @@ class _PaymentPageState extends State<PaymentPage> {
                             color: Color.fromARGB(255, 0, 0, 0),
                             size: 30, // Adjust the size as needed
                           ),
-                          // Add some space between the icon and text
-                          // const Text(
-                          //   '1234-5678-9012',
-                          //   style: TextStyle(
-                          //     color: Color.fromARGB(255, 0, 0, 0),
-                          //     fontSize: 22,
-                          //     fontFamily: 'Poppins',
-                          //   ),
-                          // ),
-                          // const SizedBox(
-                          //     width:
-                          //         5),
-                          //   Image.asset('./assets/icons/content_copy.png')
                         ],
                       ),
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.fromLTRB(
-                        100, 0, 100, 40), // Add space above the button
+                    margin: const EdgeInsets.fromLTRB(100, 0, 100, 40),
                     child: TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
@@ -378,7 +341,7 @@ class _PaymentPageState extends State<PaymentPage> {
                             0x51, // Green
                             0x31, // Blue
                             0x80 / 255.0, // Alpha (transparency)
-                          ), // Green color for the button
+                          ),
                         ),
                         shape: MaterialStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(
@@ -404,7 +367,7 @@ class _PaymentPageState extends State<PaymentPage> {
                           Icon(
                             Icons.upload,
                             color: Color.fromARGB(255, 0, 0, 0),
-                            size: 30, // Adjust the size as needed
+                            size: 30,
                           ),
                         ],
                       ),
