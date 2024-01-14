@@ -1,6 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:paystation_frontend/page/camera_page.dart';
+import 'package:paystation_frontend/screens/camera_page.dart';
 import 'package:flutter/material.dart';
 import 'package:pytorch_lite/pytorch_lite.dart';
 

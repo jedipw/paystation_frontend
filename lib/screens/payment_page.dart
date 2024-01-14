@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:paystation_frontend/page/fail_page.dart';
-import 'package:paystation_frontend/page/thanks_page.dart';
+import 'package:paystation_frontend/screens/fail_page.dart';
+import 'package:paystation_frontend/screens/thanks_page.dart';
 import 'package:http/http.dart' as http;
 
 class PaymentPage extends StatefulWidget {
