@@ -93,7 +93,7 @@ class _CameraPageState extends State<CameraPage> {
         _isNoItem = false;
       });
 
-      Timer.periodic(const Duration(milliseconds: 1000), (Timer timer) {
+      Timer.periodic(const Duration(milliseconds: 2000), (Timer timer) {
         // Call your function here
         if (_isRealTime) {
           realTimeDetection(objectModel);
