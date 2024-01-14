@@ -301,8 +301,10 @@ class _ListPageState extends State<ListPage> {
                         addtransaction().then((value) => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    PaymentPage(transactionId: transactionId!),
+                                builder: (context) => PaymentPage(
+                                  transactionId: transactionId!,
+                                  totalPrice: calculateTotalPrice(),
+                                ),
                               ),
                             ));
                       },

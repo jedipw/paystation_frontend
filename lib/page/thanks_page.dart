@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ThanksPage extends StatelessWidget {
-  const ThanksPage({Key? key});
+  final String transactionId;
+  final num totalPrice;
+
+  const ThanksPage(
+      {super.key, required this.transactionId, required this.totalPrice});
 
   @override
   Widget build(BuildContext context) {
+    DateTime currentDate = DateTime.now();
+    String formattedDate = DateFormat('dd/MM/yyyy').format(currentDate);
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -12,7 +19,7 @@ class ThanksPage extends StatelessWidget {
           Container(
             color: const Color.fromARGB(255, 0x94, 0x51, 0x31),
           ),
-           Padding(
+          Padding(
             padding: const EdgeInsets.fromLTRB(
                 15, 60, 0, 0), // Adjust the left padding as needed
             child: IconButton(
@@ -119,7 +126,7 @@ class ThanksPage extends StatelessWidget {
               ),
             ),
           ),
-          const Positioned(
+          Positioned(
             top: 570, // Adjust the top position as needed
             left: 0,
             right: 0,
@@ -128,9 +135,9 @@ class ThanksPage extends StatelessWidget {
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Text(
-                  'Transaction ID: 202310014vGpF4tKzWkmdKvi5', // Changed text
+                  'Transaction ID: $transactionId', // Changed text
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors
                         .black, // Set the color you want for the additional text
                     fontSize: 16, // Set the desired font size
@@ -140,62 +147,63 @@ class ThanksPage extends StatelessWidget {
               ),
             ),
           ),
-         const Positioned(
-  top: 595, // Adjust the top position as needed
-  left: 0,
-  right: 0,
-  child: Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center, // Center the content
-          children: <Widget>[
-            
-             Padding(
-      padding: EdgeInsets.only(left: 80), // Add padding around the text
-      child: Text(
-        'Amount Paid',
-        style: TextStyle(
-          fontSize: 20,
-          color: Colors.black,
-          fontFamily: 'Poppins',
-        ),
-      ),
-    ),
-          // Add some space between the texts
-            Expanded(
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: EdgeInsets.only(right: 100.0), // Adjust the padding as needed
-                              child: Text(
-                                '259.00', // Add your custom text here
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color(0xFF187002),
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Poppins',
-                                ),
+          Positioned(
+            top: 595, // Adjust the top position as needed
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment:
+                        MainAxisAlignment.center, // Center the content
+                    children: <Widget>[
+                      const Padding(
+                        padding: EdgeInsets.only(
+                            left: 80), // Add padding around the text
+                        child: Text(
+                          'Amount Paid',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                          ),
+                        ),
+                      ),
+                      // Add some space between the texts
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                right: 100.0), // Adjust the padding as needed
+                            child: Text(
+                              '$totalPrice.00', // Add your custom text here
+                              style: const TextStyle(
+                                fontSize: 20,
+                                color: Color(0xFF187002),
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Poppins',
                               ),
                             ),
                           ),
                         ),
-          ],
-        ),
-        Text(
-          'Date: 15/09/2023', // Additional text
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontFamily: 'Poppins',
+                      ),
+                    ],
+                  ),
+                  Text(
+                    'Date: $formattedDate', // Additional text
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
-      ],
-    ),
-  ),
-),
-
         ],
       ),
     );

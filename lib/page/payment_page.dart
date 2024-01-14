@@ -1,10 +1,92 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:paystation_frontend/page/fail_page.dart';
 import 'package:paystation_frontend/page/thanks_page.dart';
+import 'package:http/http.dart' as http;
 
-class PaymentPage extends StatelessWidget {
+class PaymentPage extends StatefulWidget {
   final String transactionId;
-  const PaymentPage({super.key, required this.transactionId});
+  final num totalPrice;
+  const PaymentPage(
+      {super.key, required this.transactionId, required this.totalPrice});
+
+  @override
+  State<PaymentPage> createState() => _PaymentPageState();
+}
+
+class _PaymentPageState extends State<PaymentPage> {
+  String fileName = '';
+  XFile? slip;
+  final apiUrl = dotenv.env['API_URL']!;
+
+  Future _pickImageFromGallery() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (returnedImage!.path.isNotEmpty) {
+      setState(() {
+        fileName = returnedImage.name;
+        slip = returnedImage;
+        // _isRealTime = false;
+        // _isFlashOn = false;
+        // _isCameraOn = false;
+        // _controller.dispose();
+      });
+      // detectItem(returnedImage);
+    }
+  }
+
+  void uploadSlip(image) async {
+    // Append a timestamp or any other identifier to the file name
+    String modifiedFileName =
+        '${widget.transactionId}-${DateTime.now().millisecondsSinceEpoch}.jpg';
+
+    var url = Uri.http(apiUrl, 'api/upload/uploadSlip');
+    var request = http.MultipartRequest("POST", url);
+
+    if (fileName.isNotEmpty) {
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'file',
+          image.path,
+          contentType: MediaType('image', 'jpeg'),
+          filename: modifiedFileName, // Set the modified file name here
+        ),
+      );
+
+      request.send().then(
+        (response) async {
+          if (response.statusCode == 200) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => ThanksPage(
+                      transactionId: widget.transactionId,
+                      totalPrice: widget.totalPrice),
+                ));
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => const FailPage(),
+              ),
+            );
+          }
+        },
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => const FailPage(),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +124,8 @@ class PaymentPage extends StatelessWidget {
             ],
           ),
           Container(
-            padding:
-                const EdgeInsets.only(top: 135), // Adjust the top padding as needed
+            padding: const EdgeInsets.only(
+                top: 135), // Adjust the top padding as needed
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -59,7 +141,8 @@ class PaymentPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 8), // Adjust the inner padding as needed
                   child: Container(
-                    padding: const EdgeInsets.all(13), // Adjust the padding as needed
+                    padding: const EdgeInsets.all(
+                        13), // Adjust the padding as needed
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(
                           25), // Adjust the radius as needed
@@ -114,11 +197,11 @@ class PaymentPage extends StatelessWidget {
                       painter: DashedLinePainter(),
                     ),
                   ),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      SizedBox(width: 45),
-                      Text(
+                      const SizedBox(width: 45),
+                      const Text(
                         'Total',
                         style: TextStyle(
                           fontSize: 25,
@@ -131,12 +214,12 @@ class PaymentPage extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: Padding(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal:
                                     40.0), // Adjust the padding as needed
                             child: Text(
-                              "259.00", // Add your custom text here
-                              style: TextStyle(
+                              "${widget.totalPrice.toString()}.00", // Add your custom text here
+                              style: const TextStyle(
                                 fontSize: 25,
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
@@ -156,66 +239,54 @@ class PaymentPage extends StatelessWidget {
                       painter: DashedLinePainter(),
                     ),
                   ),
-                  const Positioned(
-                    top: 470, // Adjust the top position as needed
-                    left: 0,
-                    right: 0,
-                    child: Align(
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(
+                      0,
+                      0,
+                      0,
+                      0,
+                    ), // Adjust the top position as needed
+                    child: const Align(
                       alignment: Alignment.center,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Text(
-                          'Please check out at the counter.', // Changed text
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors
-                                .black, // Set the color you want for the additional text
-                            fontSize: 19, // Set the desired font size
-                            fontFamily: 'Poppins',
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            child: Text(
+                              'Please check out at the counter.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 19,
+                                fontFamily: 'Poppins',
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Positioned(
-                    top: 470, // Adjust the top position as needed
-                    left: 0,
-                    right: 0,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Text(
-                          'OR', // Changed text
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors
-                                .black, // Set the color you want for the additional text
-                            fontSize: 19, // Set the desired font size
-                            fontFamily: 'Poppins',
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            child: Text(
+                              'OR',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 19,
+                                fontFamily: 'Poppins',
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Positioned(
-                    top: 470, // Adjust the top position as needed
-                    left: 0,
-                    right: 0,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Text(
-                          'Pay with mobile banking', // Changed text
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors
-                                .black, // Set the color you want for the additional text
-                            fontSize: 19, // Set the desired font size
-                            fontFamily: 'Poppins',
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            child: Text(
+                              'Pay with mobile banking',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 19,
+                                fontFamily: 'Poppins',
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ),
@@ -236,10 +307,12 @@ class PaymentPage extends StatelessWidget {
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0),
                             side: const BorderSide(
-                              color: Color.fromRGBO(0x94, // Red
-                            0x51, // Green
-                            0x31, // Blue
-                            0x80 / 255.0,),
+                              color: Color.fromRGBO(
+                                0x94, // Red
+                                0x51, // Green
+                                0x31, // Blue
+                                0x80 / 255.0,
+                              ),
                               // Set the border color here
                               width: 3.0, // Set the border width here
                             ),
@@ -250,14 +323,15 @@ class PaymentPage extends StatelessWidget {
                           // Set the minimum width to 276
                         ),
                       ),
-                      onPressed: () {
-                        // addtransaction().then((value) => Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) =>
-                        //         PaymentPage(transactionId: transactionId!),
-                        //   ),
-                        // ));
+                      onPressed: () async {
+                        await Clipboard.setData(
+                                const ClipboardData(text: "1234-5678-9012"))
+                            .then((_) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text(
+                                      "Bank account number copied to clipboard")));
+                        });
                       },
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -276,7 +350,7 @@ class PaymentPage extends StatelessWidget {
                             color: Color.fromARGB(255, 0, 0, 0),
                             size: 30, // Adjust the size as needed
                           ),
-                           // Add some space between the icon and text
+                          // Add some space between the icon and text
                           // const Text(
                           //   '1234-5678-9012',
                           //   style: TextStyle(
@@ -289,7 +363,6 @@ class PaymentPage extends StatelessWidget {
                           //     width:
                           //         5),
                           //   Image.asset('./assets/icons/content_copy.png')
-                            
                         ],
                       ),
                     ),
@@ -312,16 +385,9 @@ class PaymentPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15.0),
                           ),
                         ),
-
                       ),
                       onPressed: () {
-                        // addtransaction().then((value) => Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //         builder: (context) =>
-                        //             PaymentPage(transactionId: transactionId!),
-                        //       ),
-                        //     ));
+                        _pickImageFromGallery();
                       },
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -340,13 +406,31 @@ class PaymentPage extends StatelessWidget {
                             color: Color.fromARGB(255, 0, 0, 0),
                             size: 30, // Adjust the size as needed
                           ),
-                          
-                          
                         ],
                       ),
                       // Add some spacing between the icon and text
                     ),
                   ),
+                  fileName.isNotEmpty
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 40),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Uploaded Image:',
+                                style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Text(
+                                fileName.substring(13),
+                                style: const TextStyle(fontFamily: 'Poppins'),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Container(),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(
                         0, 50, 0, 40), // Add space above the button
@@ -365,13 +449,7 @@ class PaymentPage extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        // addtransaction().then((value) => Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //         builder: (context) =>
-                        //             PaymentPage(transactionId: transactionId!),
-                        //       ),
-                        //     ));
+                        uploadSlip(slip);
                       },
                       child: const Text(
                         'Confirm',

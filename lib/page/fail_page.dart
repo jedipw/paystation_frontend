@@ -41,7 +41,6 @@ class FailPage extends StatelessWidget {
                   topLeft: Radius.circular(37.0),
                   topRight: Radius.circular(37.0),
                 ),
-
               ),
             ),
           ),
@@ -61,7 +60,8 @@ class FailPage extends StatelessWidget {
                   child: Text(
                     '!',
                     style: TextStyle(
-                      color: Colors.white, // Set the color you want for the exclamation mark
+                      color: Colors
+                          .white, // Set the color you want for the exclamation mark
                       fontSize: 110, // Set the desired font size
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.bold, // Make the text bold
@@ -95,7 +95,8 @@ class FailPage extends StatelessWidget {
               child: Text(
                 'Please try a different payment method',
                 style: TextStyle(
-                  color: Colors.black, // Set the color you want for the additional text
+                  color: Colors
+                      .black, // Set the color you want for the additional text
                   fontSize: 19, // Set the desired font size
                   fontFamily: 'Poppins',
                 ),
@@ -104,7 +105,8 @@ class FailPage extends StatelessWidget {
           ),
           Center(
             child: Padding(
-              padding: const EdgeInsets.only(top: 650.0), // Add space above the button
+              padding: const EdgeInsets.only(
+                  top: 650.0), // Add space above the button
               child: TextButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
