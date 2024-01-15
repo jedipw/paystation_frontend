@@ -31,4 +31,4 @@ Welcome to the PayStation Frontend GitHub Repository, an AI mobile application t
 3) Choose the desired device for execution.
 4) Select "Run without debugging."
 
-Note: Ensure that the backend is running first; refer to the installation manual in the README.md of paystation_backend.
+**Note:** For the first-time setup of the backend, please refer to the installation manual in the README.md of paystation_backend.
